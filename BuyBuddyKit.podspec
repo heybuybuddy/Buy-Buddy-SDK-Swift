@@ -17,10 +17,10 @@ s.author             = { "eciftcioglu" => "emir@buybuddy.co" }
 s.platform     = :ios, "9.0"
 s.source       = { :git => "https://github.com/heybuybuddy/Buy-Buddy-SDK-Swift.git", :tag => s.version}
 s.ios.deployment_target = '9.0'
-s.ios.vendored_frameworks = 'BBIoTKit.framework', 'BBCoreKit.framework'
+s.ios.vendored_frameworks = 'BBCoreKit.framework'
 s.license = { :type => 'MIT', :file => 'LICENSE' }
 s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.2' }
-s.source_files =  'BBIoTKit.framework/Headers/*.h', 'BBCoreKit.framework/Headers/*.h'
+s.source_files =  'BBCoreKit.framework/Headers/*.h'
 
 
 end

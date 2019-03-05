@@ -1,0 +1,4 @@
+framework module BBCoreKit {
+  header "BBCoreKit-Swift.h"
+  requires objc
+}
