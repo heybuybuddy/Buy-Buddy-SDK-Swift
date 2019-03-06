@@ -22,7 +22,7 @@
 		</data>
 		<key>Modules/BBCoreKit.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		q2O0IeHotUkO+9fJKhl6QaluNZE=
+		fGhCwApHjboIhv/3Zm3ByWFyo9c=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -68,11 +68,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			q2O0IeHotUkO+9fJKhl6QaluNZE=
+			fGhCwApHjboIhv/3Zm3ByWFyo9c=
 			</data>
 			<key>hash2</key>
 			<data>
-			ksCGYr42f8WRu+xicQQfaMT9OSi2r0Hrven2UlvsAJY=
+			tlBtzMVR+XC26KMOiNUQcVWLE99xryuQxFMurFKE3ho=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
