@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
 
-s.name         = "Buy-Buddy-SDK-Swift"
+s.name         = "BuyBuddySDK"
 s.version      = "1.0.0"
 s.summary      = "Official Buy Buddy SDK"
 s.description  = "Official Buy Buddy SDK"
