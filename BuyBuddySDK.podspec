@@ -1,4 +1,4 @@
-#
+ #
 #  Be sure to run `pod spec lint BuyBuddyKit.podspec' to ensure this is a
 #  valid spec and to remove all comments including this before submitting the spec.
 #
@@ -9,9 +9,9 @@
 Pod::Spec.new do |s|
 
 s.name         = "BuyBuddySDK"
-s.version      = "1.0.0"
+s.version      = "1.0.1"
 s.summary      = "Official Buy Buddy SDK"
-s.description  = "Official Buy Buddy SDK"
+s.description  = "Official Buy Buddy SDK enabling Buy Buddy api calls."
 s.homepage     = "http://buybuddy.co"
 s.author             = { "eciftcioglu" => "emir@buybuddy.co" }
 s.platform     = :ios, "9.0"

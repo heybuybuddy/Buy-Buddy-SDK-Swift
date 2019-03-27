@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/BBCoreKit-Swift.h</key>
 		<data>
-		gfqz0Vlq+JkL5MA4ZWsXn/6pfEI=
+		SEXYecn2QmGlBbIFMmwXuZFW50Y=
 		</data>
 		<key>Headers/BuyBuddySDK.h</key>
 		<data>
@@ -14,15 +14,31 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		1WvD937K4uxnYG+Eit3UzIhq4Ic=
+		RAZGRQPunyNciNCtpEOjG5r9M7s=
+		</data>
+		<key>Modules/BBCoreKit.swiftmodule/arm.swiftdoc</key>
+		<data>
+		4wb/LAtsh0gwgKX4fXECapaXGLk=
+		</data>
+		<key>Modules/BBCoreKit.swiftmodule/arm.swiftmodule</key>
+		<data>
+		ZZHa1qXYA7VaTqOrHOcOR5o2Oro=
 		</data>
 		<key>Modules/BBCoreKit.swiftmodule/arm64.swiftdoc</key>
 		<data>
-		tiJA8i4EMi4SXLqrwzvJxb1NL4U=
+		w4VKye1pMtV+P47IWmrmXPAgMeY=
 		</data>
 		<key>Modules/BBCoreKit.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		fGhCwApHjboIhv/3Zm3ByWFyo9c=
+		qtJiEklBDWvqnT8P9spfwR7MFeU=
+		</data>
+		<key>Modules/BBCoreKit.swiftmodule/armv7.swiftdoc</key>
+		<data>
+		4wb/LAtsh0gwgKX4fXECapaXGLk=
+		</data>
+		<key>Modules/BBCoreKit.swiftmodule/armv7.swiftmodule</key>
+		<data>
+		ZZHa1qXYA7VaTqOrHOcOR5o2Oro=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -35,11 +51,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			gfqz0Vlq+JkL5MA4ZWsXn/6pfEI=
+			SEXYecn2QmGlBbIFMmwXuZFW50Y=
 			</data>
 			<key>hash2</key>
 			<data>
-			aY4hoDWj2DZZJp29J3QE035eXr0zMHjoGZNq/m8TsEQ=
+			i5PEp/CtlahX0KXY2kqYJDmv8Gr94KW2XCaLqdZSWGo=
 			</data>
 		</dict>
 		<key>Headers/BuyBuddySDK.h</key>
@@ -53,26 +69,70 @@
 			+E0QlDN/6cRJE6JgUkv58kAHuUjZvnOCmw/YV3nHEQ8=
 			</data>
 		</dict>
+		<key>Modules/BBCoreKit.swiftmodule/arm.swiftdoc</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			4wb/LAtsh0gwgKX4fXECapaXGLk=
+			</data>
+			<key>hash2</key>
+			<data>
+			Ri4y4uixTYgp0hJYcWil0pi27zx6cgCimF7+rYweJMg=
+			</data>
+		</dict>
+		<key>Modules/BBCoreKit.swiftmodule/arm.swiftmodule</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			ZZHa1qXYA7VaTqOrHOcOR5o2Oro=
+			</data>
+			<key>hash2</key>
+			<data>
+			zY5i4eVLQgDWvr/rYkuXyCRVj6cSTQR2vZvUUiLcpqA=
+			</data>
+		</dict>
 		<key>Modules/BBCoreKit.swiftmodule/arm64.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			tiJA8i4EMi4SXLqrwzvJxb1NL4U=
+			w4VKye1pMtV+P47IWmrmXPAgMeY=
 			</data>
 			<key>hash2</key>
 			<data>
-			Rv6+meGt+y1wnbL6wd8o9evsxkp5R+TiDK8iRtxQeoU=
+			lxCatFjQQZK7lgJsB5/GJQob5QzwNLm4v0lqn+il1m4=
 			</data>
 		</dict>
 		<key>Modules/BBCoreKit.swiftmodule/arm64.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			fGhCwApHjboIhv/3Zm3ByWFyo9c=
+			qtJiEklBDWvqnT8P9spfwR7MFeU=
 			</data>
 			<key>hash2</key>
 			<data>
-			tlBtzMVR+XC26KMOiNUQcVWLE99xryuQxFMurFKE3ho=
+			xeOkgjbmIkXNkcbfR6gM33/jjf5VepAa2aW+Nyuae7E=
+			</data>
+		</dict>
+		<key>Modules/BBCoreKit.swiftmodule/armv7.swiftdoc</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			4wb/LAtsh0gwgKX4fXECapaXGLk=
+			</data>
+			<key>hash2</key>
+			<data>
+			Ri4y4uixTYgp0hJYcWil0pi27zx6cgCimF7+rYweJMg=
+			</data>
+		</dict>
+		<key>Modules/BBCoreKit.swiftmodule/armv7.swiftmodule</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			ZZHa1qXYA7VaTqOrHOcOR5o2Oro=
+			</data>
+			<key>hash2</key>
+			<data>
+			zY5i4eVLQgDWvr/rYkuXyCRVj6cSTQR2vZvUUiLcpqA=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
