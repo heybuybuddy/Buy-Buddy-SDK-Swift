@@ -36,7 +36,7 @@ BuyBuddy engineering team is always ready to support you.
 All contributions are welcomed, you may open issues or pull requests regarding bug (or bug fixes), new features, or improvements and clarifications in documentations.
 We really try hard to make everything found (including HTTP web services) in our platform open source, hence we expect patience from you while everything is going to be eligible.
 
-Finally, please read our [Code of Conduct](https://github.com/eciftcioglu/buybuddy-sdk-swift/blob/master/code-of-conduct.md).
+Finally, please read our [Code of Conduct](https://github.com/heybuybuddy/Buy-Buddy-SDK-Swift/blob/master/code-of-conduct.md).
 
 ### Running Unit Tests
 1. Clone the repository to your local: `git clone https://github.com/eciftcioglu/buybuddy-sdk-swift/`.
