@@ -186,6 +186,8 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #if __has_warning("-Watimport-in-framework-header")
 #pragma clang diagnostic ignored "-Watimport-in-framework-header"
 #endif
+@import CoreBluetooth;
+@import CoreLocation;
 @import Foundation;
 @import ObjectiveC;
 #endif
@@ -205,11 +207,74 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 # pragma pop_macro("any")
 #endif
 
+
+/// Responsible for collecting device data and sharing this data with the Buy Buddy API. This class should be initialized to receive user events.
+SWIFT_CLASS("_TtC9BBCoreKit14BBEventManager")
+@interface BBEventManager : NSObject
+- (void)deviceDataHandler;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+@class CLLocationManager;
+@class CLRegion;
+@class CLBeacon;
+@class CLBeaconRegion;
+
+@interface BBEventManager (SWIFT_EXTENSION(BBCoreKit)) <CLLocationManagerDelegate>
+- (void)locationManager:(CLLocationManager * _Nonnull)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status;
+- (void)locationManager:(CLLocationManager * _Nonnull)manager didEnterRegion:(CLRegion * _Nonnull)region;
+- (void)locationManager:(CLLocationManager * _Nonnull)manager didExitRegion:(CLRegion * _Nonnull)region;
+- (void)locationManager:(CLLocationManager * _Nonnull)manager didRangeBeacons:(NSArray<CLBeacon *> * _Nonnull)beacons inRegion:(CLBeaconRegion * _Nonnull)region;
+@end
+
+
+/// An interface to the Bluetooth peripheral.
+SWIFT_CLASS("_TtC9BBCoreKit15BBIoTPeripheral")
+@interface BBIoTPeripheral : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+
+@class CBPeripheral;
+@class CBService;
+@class CBCharacteristic;
+
+@interface BBIoTPeripheral (SWIFT_EXTENSION(BBCoreKit)) <CBPeripheralDelegate>
+- (void)peripheral:(CBPeripheral * _Nonnull)peripheral didDiscoverServices:(NSError * _Nullable)error;
+- (void)peripheral:(CBPeripheral * _Nonnull)peripheral didDiscoverCharacteristicsForService:(CBService * _Nonnull)service error:(NSError * _Nullable)error;
+- (void)peripheral:(CBPeripheral * _Nonnull)peripheral didWriteValueForCharacteristic:(CBCharacteristic * _Nonnull)characteristic error:(NSError * _Nullable)error;
+- (void)peripheral:(CBPeripheral * _Nonnull)peripheral didUpdateValueForCharacteristic:(CBCharacteristic * _Nonnull)characteristic error:(NSError * _Nullable)error;
+- (void)peripheral:(CBPeripheral * _Nonnull)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic * _Nonnull)characteristic error:(NSError * _Nullable)error;
+@end
+
+
+/// Responsible for handling all CBCentralManagerDelegate callbacks for the underlying session.
+SWIFT_CLASS("_TtC9BBCoreKit20BBIoTSessionDelegate")
+@interface BBIoTSessionDelegate : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+@class CBCentralManager;
+@class NSNumber;
+
+@interface BBIoTSessionDelegate (SWIFT_EXTENSION(BBCoreKit)) <CBCentralManagerDelegate>
+- (void)centralManagerDidUpdateState:(CBCentralManager * _Nonnull)central;
+- (void)centralManager:(CBCentralManager * _Nonnull)central didDiscoverPeripheral:(CBPeripheral * _Nonnull)peripheral advertisementData:(NSDictionary<NSString *, id> * _Nonnull)advertisementData RSSI:(NSNumber * _Nonnull)RSSI;
+- (void)centralManager:(CBCentralManager * _Nonnull)central didConnectPeripheral:(CBPeripheral * _Nonnull)peripheral;
+- (void)centralManager:(CBCentralManager * _Nonnull)central willRestoreState:(NSDictionary<NSString *, id> * _Nonnull)dict;
+- (void)centralManager:(CBCentralManager * _Nonnull)central didFailToConnectPeripheral:(CBPeripheral * _Nonnull)peripheral error:(NSError * _Nullable)error;
+- (void)centralManager:(CBCentralManager * _Nonnull)central didDisconnectPeripheral:(CBPeripheral * _Nonnull)peripheral error:(NSError * _Nullable)error;
+@end
+
 @class NSCoder;
 
 /// Represents an access token used to authenticate with the Buy Buddy Api.
-SWIFT_CLASS("_TtC9BBCoreKit12JsonWebToken")
-@interface JsonWebToken : NSObject <NSCoding>
+SWIFT_CLASS("_TtC9BBCoreKit14BBJsonWebToken")
+@interface BBJsonWebToken : NSObject <NSCoding>
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 - (void)encodeWithCoder:(NSCoder * _Nonnull)aCoder;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
@@ -222,13 +287,19 @@ SWIFT_CLASS("_TtC9BBCoreKit12JsonWebToken")
 
 
 /// Represents an access token used to authenticate with the Buy Buddy Api.
-SWIFT_CLASS("_TtC9BBCoreKit10Passphrase")
-@interface Passphrase : NSObject <NSCoding>
+SWIFT_CLASS("_TtC9BBCoreKit12BBPassphrase")
+@interface BBPassphrase : NSObject <NSCoding>
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 - (void)encodeWithCoder:(NSCoder * _Nonnull)aCoder;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
+
+
+
+
+
+
 
 
 
