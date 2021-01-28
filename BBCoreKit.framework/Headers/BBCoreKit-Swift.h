@@ -240,10 +240,13 @@ SWIFT_CLASS("_TtC9BBCoreKit15BBIoTPeripheral")
 
 
 @class CBPeripheral;
+@class NSNumber;
 @class CBService;
 @class CBCharacteristic;
 
 @interface BBIoTPeripheral (SWIFT_EXTENSION(BBCoreKit)) <CBPeripheralDelegate>
+- (void)peripheralDidUpdateRSSI:(CBPeripheral * _Nonnull)peripheral error:(NSError * _Nullable)error;
+- (void)peripheral:(CBPeripheral * _Nonnull)peripheral didReadRSSI:(NSNumber * _Nonnull)RSSI error:(NSError * _Nullable)error;
 - (void)peripheral:(CBPeripheral * _Nonnull)peripheral didDiscoverServices:(NSError * _Nullable)error;
 - (void)peripheral:(CBPeripheral * _Nonnull)peripheral didDiscoverCharacteristicsForService:(CBService * _Nonnull)service error:(NSError * _Nullable)error;
 - (void)peripheral:(CBPeripheral * _Nonnull)peripheral didWriteValueForCharacteristic:(CBCharacteristic * _Nonnull)characteristic error:(NSError * _Nullable)error;
@@ -260,7 +263,6 @@ SWIFT_CLASS("_TtC9BBCoreKit20BBIoTSessionDelegate")
 @end
 
 @class CBCentralManager;
-@class NSNumber;
 
 @interface BBIoTSessionDelegate (SWIFT_EXTENSION(BBCoreKit)) <CBCentralManagerDelegate>
 - (void)centralManagerDidUpdateState:(CBCentralManager * _Nonnull)central;
