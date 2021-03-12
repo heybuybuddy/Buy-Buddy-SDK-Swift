@@ -190,6 +190,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #endif
 @import CoreBluetooth;
 @import CoreLocation;
+@import CoreNFC;
 @import Foundation;
 @import ObjectiveC;
 #endif
@@ -213,7 +214,6 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 /// Responsible for collecting device data and sharing this data with the Buy Buddy API. This class should be initialized to receive user events.
 SWIFT_CLASS("_TtC9BBCoreKit14BBEventManager")
 @interface BBEventManager : NSObject
-- (void)deviceDataHandler;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
@@ -254,25 +254,6 @@ SWIFT_CLASS("_TtC9BBCoreKit15BBIoTPeripheral")
 - (void)peripheral:(CBPeripheral * _Nonnull)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic * _Nonnull)characteristic error:(NSError * _Nullable)error;
 @end
 
-
-/// Responsible for handling all CBCentralManagerDelegate callbacks for the underlying session.
-SWIFT_CLASS("_TtC9BBCoreKit20BBIoTSessionDelegate")
-@interface BBIoTSessionDelegate : NSObject
-- (nonnull instancetype)init SWIFT_UNAVAILABLE;
-+ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
-@end
-
-@class CBCentralManager;
-
-@interface BBIoTSessionDelegate (SWIFT_EXTENSION(BBCoreKit)) <CBCentralManagerDelegate>
-- (void)centralManagerDidUpdateState:(CBCentralManager * _Nonnull)central;
-- (void)centralManager:(CBCentralManager * _Nonnull)central didDiscoverPeripheral:(CBPeripheral * _Nonnull)peripheral advertisementData:(NSDictionary<NSString *, id> * _Nonnull)advertisementData RSSI:(NSNumber * _Nonnull)RSSI;
-- (void)centralManager:(CBCentralManager * _Nonnull)central didConnectPeripheral:(CBPeripheral * _Nonnull)peripheral;
-- (void)centralManager:(CBCentralManager * _Nonnull)central willRestoreState:(NSDictionary<NSString *, id> * _Nonnull)dict;
-- (void)centralManager:(CBCentralManager * _Nonnull)central didFailToConnectPeripheral:(CBPeripheral * _Nonnull)peripheral error:(NSError * _Nullable)error;
-- (void)centralManager:(CBCentralManager * _Nonnull)central didDisconnectPeripheral:(CBPeripheral * _Nonnull)peripheral error:(NSError * _Nullable)error;
-@end
-
 @class NSCoder;
 
 /// Represents an access token used to authenticate with the Buy Buddy Api.
@@ -285,6 +266,24 @@ SWIFT_CLASS("_TtC9BBCoreKit14BBJsonWebToken")
 @end
 
 
+
+
+SWIFT_CLASS("_TtC9BBCoreKit22BBNFCNDEFReaderSession") SWIFT_AVAILABILITY(ios,introduced=13.0)
+@interface BBNFCNDEFReaderSession : NSObject <NFCNDEFReaderSessionDelegate>
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+@class NFCNDEFReaderSession;
+@class NFCNDEFMessage;
+@protocol NFCNDEFTag;
+
+SWIFT_AVAILABILITY(ios,introduced=13.0)
+@interface BBNFCNDEFReaderSession (SWIFT_EXTENSION(BBCoreKit))
+- (void)readerSession:(NFCNDEFReaderSession * _Nonnull)session didInvalidateWithError:(NSError * _Nonnull)error;
+- (void)readerSession:(NFCNDEFReaderSession * _Nonnull)session didDetectNDEFs:(NSArray<NFCNDEFMessage *> * _Nonnull)messages;
+- (void)readerSession:(NFCNDEFReaderSession * _Nonnull)session didDetectTags:(NSArray<id <NFCNDEFTag>> * _Nonnull)tags SWIFT_AVAILABILITY(ios,introduced=13.0);
+@end
 
 
 /// Represents an access token used to authenticate with the Buy Buddy Api.
