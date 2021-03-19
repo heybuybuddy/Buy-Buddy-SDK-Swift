@@ -280,6 +280,7 @@ SWIFT_CLASS("_TtC9BBCoreKit22BBNFCNDEFReaderSession") SWIFT_AVAILABILITY(ios,int
 
 SWIFT_AVAILABILITY(ios,introduced=13.0)
 @interface BBNFCNDEFReaderSession (SWIFT_EXTENSION(BBCoreKit))
+- (void)readerSessionDidBecomeActive:(NFCNDEFReaderSession * _Nonnull)session;
 - (void)readerSession:(NFCNDEFReaderSession * _Nonnull)session didInvalidateWithError:(NSError * _Nonnull)error;
 - (void)readerSession:(NFCNDEFReaderSession * _Nonnull)session didDetectNDEFs:(NSArray<NFCNDEFMessage *> * _Nonnull)messages;
 - (void)readerSession:(NFCNDEFReaderSession * _Nonnull)session didDetectTags:(NSArray<id <NFCNDEFTag>> * _Nonnull)tags SWIFT_AVAILABILITY(ios,introduced=13.0);
