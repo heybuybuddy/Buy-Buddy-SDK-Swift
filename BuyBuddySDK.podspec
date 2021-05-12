@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
 s.name         = "BuyBuddySDK"
-s.version      = "1.6.9"
+s.version      = "1.7.0"
 s.summary      = "Official Buy Buddy SDK"
 s.description  = "Official Buy Buddy SDK enabling Buy Buddy api calls."
 s.homepage     = "http://buybuddy.co"
