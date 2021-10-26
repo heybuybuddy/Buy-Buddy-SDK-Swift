@@ -237,10 +237,6 @@ extension BBCoreKit.BBEventManager : CoreLocation.CLLocationManagerDelegate {
   @objc dynamic public func locationManager(_ manager: CoreLocation.CLLocationManager, didExitRegion region: CoreLocation.CLRegion)
   @objc dynamic public func locationManager(_ manager: CoreLocation.CLLocationManager, didRangeBeacons beacons: [CoreLocation.CLBeacon], in region: CoreLocation.CLBeaconRegion)
 }
-extension BBCoreKit.BBEventManager : CoreBluetooth.CBCentralManagerDelegate {
-  @objc dynamic public func centralManagerDidUpdateState(_ central: CoreBluetooth.CBCentralManager)
-  @objc dynamic public func centralManager(_ central: CoreBluetooth.CBCentralManager, didDiscover peripheral: CoreBluetooth.CBPeripheral, advertisementData: [Swift.String : Any], rssi RSSI: Foundation.NSNumber)
-}
 public protocol BBRequestProtocol {
   associatedtype Response : BBCoreKit.BBResponse
   var urlPath: Swift.String { get }
