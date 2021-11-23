@@ -220,6 +220,16 @@ SWIFT_CLASS("_TtC9BBCoreKit14BBEventManager")
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
+@class CBCentralManager;
+@class CBPeripheral;
+@class NSString;
+@class NSNumber;
+
+@interface BBEventManager (SWIFT_EXTENSION(BBCoreKit)) <CBCentralManagerDelegate>
+- (void)centralManagerDidUpdateState:(CBCentralManager * _Nonnull)central;
+- (void)centralManager:(CBCentralManager * _Nonnull)central didDiscoverPeripheral:(CBPeripheral * _Nonnull)peripheral advertisementData:(NSDictionary<NSString *, id> * _Nonnull)advertisementData RSSI:(NSNumber * _Nonnull)RSSI;
+@end
+
 @class CLLocationManager;
 @class CLRegion;
 @class CLBeacon;
@@ -241,8 +251,6 @@ SWIFT_CLASS("_TtC9BBCoreKit15BBIoTPeripheral")
 @end
 
 
-@class CBPeripheral;
-@class NSNumber;
 @class CBService;
 @class CBCharacteristic;
 
@@ -530,6 +538,16 @@ SWIFT_CLASS("_TtC9BBCoreKit14BBEventManager")
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
+@class CBCentralManager;
+@class CBPeripheral;
+@class NSString;
+@class NSNumber;
+
+@interface BBEventManager (SWIFT_EXTENSION(BBCoreKit)) <CBCentralManagerDelegate>
+- (void)centralManagerDidUpdateState:(CBCentralManager * _Nonnull)central;
+- (void)centralManager:(CBCentralManager * _Nonnull)central didDiscoverPeripheral:(CBPeripheral * _Nonnull)peripheral advertisementData:(NSDictionary<NSString *, id> * _Nonnull)advertisementData RSSI:(NSNumber * _Nonnull)RSSI;
+@end
+
 @class CLLocationManager;
 @class CLRegion;
 @class CLBeacon;
@@ -551,8 +569,6 @@ SWIFT_CLASS("_TtC9BBCoreKit15BBIoTPeripheral")
 @end
 
 
-@class CBPeripheral;
-@class NSNumber;
 @class CBService;
 @class CBCharacteristic;
 

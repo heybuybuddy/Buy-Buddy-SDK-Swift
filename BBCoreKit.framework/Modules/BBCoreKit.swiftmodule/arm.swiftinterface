@@ -187,7 +187,7 @@ public class BBInventoryManager : BBCoreKit.BBNFCSessionDelegate {
   public func fetchCloseProximityItems(proximityLimit: Swift.Double, eventManager: BBCoreKit.BBEventManager, completion: @escaping ([[Swift.String : Any]], Swift.Int) -> Swift.Void, error: @escaping (Swift.String?) -> Swift.Void)
   public func fetchCloseProximityItemsWithStock(proximityLimit: Swift.Double, eventManager: BBCoreKit.BBEventManager, completion: @escaping ([[Swift.String : Any]], Swift.Int) -> Swift.Void, error: @escaping (Swift.String?) -> Swift.Void)
   @available(iOS 13.0, *)
-  public func fetchItemWithNFC(infoMessage: Swift.String, successMessage: Swift.String)
+  public func fetchItemWithNFC(infoMessage: Swift.String, shouldFallbackToBluetooth: Swift.Bool = false, successMessage: Swift.String)
   public func fetchStockCount()
   public func fetchStockCountWithItems()
   @objc deinit
@@ -236,6 +236,10 @@ extension BBCoreKit.BBEventManager : CoreLocation.CLLocationManagerDelegate {
   @objc dynamic public func locationManager(_ manager: CoreLocation.CLLocationManager, didEnterRegion region: CoreLocation.CLRegion)
   @objc dynamic public func locationManager(_ manager: CoreLocation.CLLocationManager, didExitRegion region: CoreLocation.CLRegion)
   @objc dynamic public func locationManager(_ manager: CoreLocation.CLLocationManager, didRangeBeacons beacons: [CoreLocation.CLBeacon], in region: CoreLocation.CLBeaconRegion)
+}
+extension BBCoreKit.BBEventManager : CoreBluetooth.CBCentralManagerDelegate {
+  @objc dynamic public func centralManagerDidUpdateState(_ central: CoreBluetooth.CBCentralManager)
+  @objc dynamic public func centralManager(_ central: CoreBluetooth.CBCentralManager, didDiscover peripheral: CoreBluetooth.CBPeripheral, advertisementData: [Swift.String : Any], rssi RSSI: Foundation.NSNumber)
 }
 public protocol BBRequestProtocol {
   associatedtype Response : BBCoreKit.BBResponse
