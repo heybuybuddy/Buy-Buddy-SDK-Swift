@@ -1,5 +1,5 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.5.2 (swiftlang-1300.0.47.5 clang-1300.0.29.30)
+// swift-compiler-version: Apple Swift version 5.6 (swiftlang-5.6.0.323.62 clang-1316.0.20.8)
 // swift-module-flags: -target x86_64-apple-ios13.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -Onone -module-name BBCoreKit
 import CoreBluetooth
 import CoreLocation
@@ -223,7 +223,7 @@ extension BBCoreKit.BBEventManagerDelegate {
   public static var sharedInstance: BBCoreKit.BBEventManager!
   public static var delegate: BBCoreKit.BBEventManagerDelegate? {
     get
-    set(value)
+    set
   }
   public class func dispose()
   public class func initEventManager(environment: BBCoreKit.BBEnvironment = BBEnvironment(host: BBEnvironmentURL.production))
@@ -586,3 +586,23 @@ extension BBCoreKit.BBNFCNDEFReaderSession {
   public func write(_ type: BBCoreKit.NFCTypes, infoMessage: Swift.String, successMessage: Swift.String)
   public func secureWrite(_ secureKey: Swift.String, infoMessage: Swift.String, successMessage: Swift.String)
 }
+extension BBCoreKit.DeviceType : Swift.Equatable {}
+extension BBCoreKit.DeviceType : Swift.Hashable {}
+extension BBCoreKit.BBIoTIdentifier : Swift.Equatable {}
+extension BBCoreKit.BBIoTIdentifier : Swift.Hashable {}
+extension BBCoreKit.BBIoTIdentifier : Swift.RawRepresentable {}
+extension BBCoreKit.BBRequestHTTPMethod : Swift.Equatable {}
+extension BBCoreKit.BBRequestHTTPMethod : Swift.Hashable {}
+extension BBCoreKit.BBRequestHTTPMethod : Swift.RawRepresentable {}
+extension BBCoreKit.NFCTypes : Swift.Equatable {}
+extension BBCoreKit.NFCTypes : Swift.Hashable {}
+extension BBCoreKit.BBEncoderError : Swift.Equatable {}
+extension BBCoreKit.BBEncoderError : Swift.Hashable {}
+extension BBCoreKit.BBEnvironmentURL : Swift.Equatable {}
+extension BBCoreKit.BBEnvironmentURL : Swift.Hashable {}
+extension BBCoreKit.BBEnvironmentURL : Swift.RawRepresentable {}
+extension BBCoreKit.BBCartItemStatus : Swift.Equatable {}
+extension BBCoreKit.BBCartItemStatus : Swift.Hashable {}
+extension BBCoreKit.BBCartItemStatus : Swift.RawRepresentable {}
+extension BBCoreKit.BBKKeychainStorageAttributeKey : Swift.Equatable {}
+extension BBCoreKit.BBKKeychainStorageAttributeKey : Swift.Hashable {}
