@@ -9,21 +9,15 @@
 Pod::Spec.new do |s|
 
 s.name         = "BuyBuddySDK"
-s.version      = "1.8.4"
+s.version      = "1.8.5"
 s.summary      = "Official Buy Buddy SDK"
 s.description  = "Official Buy Buddy SDK enabling Buy Buddy api calls."
 s.homepage     = "http://buybuddy.co"
 s.author             = { "eciftcioglu" => "emir@buybuddy.co" }
-s.platform     = :ios, "9.0"
+s.platform     = :ios, "13.0"
 s.source       = { :git => "https://github.com/heybuybuddy/Buy-Buddy-SDK-Swift.git", :tag => s.version}
-s.ios.deployment_target = '9.0'
-s.ios.vendored_frameworks = 'BBCoreKit.framework'
+s.ios.deployment_target = '13.0'
+s.vendored_frameworks = 'BBCoreKit.xcframework'
 s.license = { :type => 'MIT', :file => 'LICENSE' }
 s.pod_target_xcconfig = { 'SWIFT_VERSION' => '5.0' }
-s.source_files =  'BBCoreKit.framework/Headers/*.h'
-s.pod_target_xcconfig = {
-    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
-  }
-  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
-
 end

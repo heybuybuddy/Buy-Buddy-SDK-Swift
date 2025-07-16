@@ -1,6 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.6 (swiftlang-5.6.0.323.62 clang-1316.0.20.8)
-// swift-module-flags: -target arm64-apple-ios13.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name BBCoreKit
+// swift-compiler-version: Apple Swift version 6.0.3 effective-5.10 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)
+// swift-module-flags: -target arm64-apple-ios15.6 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name BBCoreKit
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface
 import CoreBluetooth
 import CoreLocation
 import CoreNFC
@@ -9,6 +10,8 @@ import Swift
 import UIKit
 import UserNotifications
 import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
 public protocol BBResponseProtocol {
   init(response: Any?)
 }
@@ -32,7 +35,7 @@ open class BBKeychainPersistenceManager {
 }
 public enum BBIoTCommand {
   case activate(value: Swift.Int)
-  case custom(value: Swift.String)
+  case custom(value: Swift.String, calibrationLimit: Swift.Int? = 0, shouldAddCalibration: Swift.Bool = true)
   case dfu
   case listen
   case deactivate
@@ -123,8 +126,10 @@ public class BBResponse : BBCoreKit.BBResponseProtocol {
 }
 public enum BBIoTIdentifier : Swift.String {
   case commandCharacteristic
-  case capacitiveCharacteristic
+  case capacitiveCharacteristicTop
+  case capacitiveCharacteristicBottom
   case bluetoothService
+  case scannerService
   case beaconService
   case scannerCommandCharacteristic
   case unknownCharacteristic
@@ -141,7 +146,7 @@ public enum BBIoTConnectionResult {
   case success(BBCoreKit.BBIoTDevice)
   case disconnected(BBCoreKit.BBIoTDevice)
   case cancelled
-  case failure(Swift.Error)
+  case failure(any Swift.Error)
 }
 public protocol BBInventoryManagerDelegate {
   func bbInventoryManagerDidPair(item: [Swift.String : Any]?, responseCode: Swift.Int?, error: Swift.String?)
@@ -165,8 +170,9 @@ extension BBCoreKit.BBInventoryManagerDelegate {
   public func bbInventoryManagerDidFetchCountWithItems(items: [Any])
   public func bbInventoryManagerDidFetchSecureKey(secureKey: [Swift.String : Any], responseCode: Swift.Int, error: Swift.String)
 }
+@available(iOS 13.0, *)
 public class BBInventoryManager : BBCoreKit.BBNFCSessionDelegate {
-  public var delegate: BBCoreKit.BBInventoryManagerDelegate?
+  public var delegate: (any BBCoreKit.BBInventoryManagerDelegate)?
   public var calibrationValue: Swift.Int?
   required public init(environment: BBCoreKit.BBEnvironment = BBEnvironment(host: BBEnvironmentURL.production))
   public func pair(deviceIdentifier: Swift.String, upc: Swift.String, completion: @escaping ([Swift.String : Any]?, Swift.Int?) -> Swift.Void, error: @escaping (Swift.String?, Swift.Int?) -> Swift.Void)
@@ -201,32 +207,38 @@ public class BBIoTSession {
   }
   public init()
   public func start()
-  public func scanForDevices(withServiceUUIDs serviceUUIDs: [BBCoreKit.BBIoTIdentifier] = [BBIoTIdentifier.bluetoothService], duration: Foundation.TimeInterval = 0, completion: @escaping (BBCoreKit.BBIoTDevice, [BBCoreKit.BBIoTDevice]) -> BBCoreKit.BBScanTask, stopped: @escaping ([BBCoreKit.BBIoTDevice], Swift.Error?) -> Swift.Void)
+  public func scanForDevices(withServiceUUIDs serviceUUIDs: [BBCoreKit.BBIoTIdentifier] = [], duration: Foundation.TimeInterval = 0, completion: @escaping (BBCoreKit.BBIoTDevice, [BBCoreKit.BBIoTDevice]) -> BBCoreKit.BBScanTask, stopped: @escaping ([BBCoreKit.BBIoTDevice], (any Swift.Error)?) -> Swift.Void)
   public func disconnect(device: BBCoreKit.BBIoTDevice)
   public func stopScan()
   public func connect(device: BBCoreKit.BBIoTDevice, timeout: BBCoreKit.Timeout, completion: @escaping (BBCoreKit.BBIoTConnectionResult) -> Swift.Void)
   public func read(from identifier: BBCoreKit.BBIoTIdentifier, device: BBCoreKit.BBIoTDevice, completion: @escaping (Foundation.Data?, BBCoreKit.BBIoTError?) -> Swift.Void)
   public func write(to identifier: BBCoreKit.BBIoTIdentifier, command: BBCoreKit.BBIoTCommand, device: BBCoreKit.BBIoTDevice, completion: @escaping (Swift.Bool) -> Swift.Void)
   public func listen(to characteristicIdentifier: BBCoreKit.BBIoTIdentifier, device: BBCoreKit.BBIoTDevice, completion: @escaping (CoreBluetooth.CBCharacteristic?, Foundation.Data?) -> Swift.Void)
-  public func listenRssi(device: BBCoreKit.BBIoTDevice, completion: @escaping (Swift.Int?) -> Swift.Void)
+  public func listenRssi(device: BBCoreKit.BBIoTDevice, completion: @escaping (Swift.Int?, BBCoreKit.BBIoTError?) -> Swift.Void)
   @objc deinit
 }
 public protocol BBEventManagerDelegate : AnyObject {
   func didReceiveInteraction(data: BBCoreKit.BBEvent)
   func bluetoothAuthorizationDelegate(didChangeStatus: CoreLocation.CLAuthorizationStatus)
+  func didEnterStoreRegion()
+  func didExitStoreRegion()
 }
 extension BBCoreKit.BBEventManagerDelegate {
   public func didReceiveInteraction(data: BBCoreKit.BBEvent)
   public func bluetoothAuthorizationDelegate(didChangeStatus: CoreLocation.CLAuthorizationStatus)
+  public func didEnterStoreRegion()
+  public func didExitStoreRegion()
 }
 @objc @_hasMissingDesignatedInitializers public class BBEventManager : ObjectiveC.NSObject {
-  public static var sharedInstance: BBCoreKit.BBEventManager!
-  public static var delegate: BBCoreKit.BBEventManagerDelegate? {
+  public static var shared: BBCoreKit.BBEventManager {
+    get
+  }
+  public static var delegate: (any BBCoreKit.BBEventManagerDelegate)? {
     get
     set
   }
-  public class func dispose()
   public class func initEventManager(environment: BBCoreKit.BBEnvironment = BBEnvironment(host: BBEnvironmentURL.production))
+  public class func dispose()
   public class func startSharing()
   public class func stopSharing()
   @objc deinit
@@ -289,7 +301,7 @@ extension BBCoreKit.BBNFCSessionDelegate {
 public class BBNFCSession : BBCoreKit.BBNFCNDEFReaderSessionDelegate {
   public var readerSession: BBCoreKit.BBNFCNDEFReaderSession?
   public var ndefReaderSession: CoreNFC.NFCNDEFReaderSession?
-  public var readDelegate: BBCoreKit.BBNFCSessionDelegate?
+  public var readDelegate: (any BBCoreKit.BBNFCSessionDelegate)?
   public func bbNFCNDEFReaderSessionDidRead(identifier: Swift.String, error: Swift.String)
   public func bbNFCNDEFReaderSessionDidWrite(identifier: Swift.String, type: BBCoreKit.NFCTypes, error: Swift.String)
   public func bbNFCNDEFReaderSessionDidSecureWrite(identifier: Swift.String, otc: Swift.String, type: BBCoreKit.NFCTypes, commandType: Swift.String, error: Swift.String)
@@ -372,7 +384,7 @@ public class BBRequest : BBCoreKit.BBRequestProtocol {
   public var passphrase: BBCoreKit.BBPassphrase?
   public var httpMethod: BBCoreKit.BBRequestHTTPMethod
   public var headers: [Swift.String : Swift.String]?
-  public init(urlPath: Swift.String, parameters: [Swift.String : Any] = [:], queryParameters: [Foundation.URLQueryItem] = [], headers: [Swift.String : Swift.String] = ["Content-Type": "application/json"], accessToken: BBCoreKit.BBPassphrase? = BBPassphrase.current, httpMethod: BBCoreKit.BBRequestHTTPMethod = .GET)
+  public init(urlPath: Swift.String, parameters: [Swift.String : Any] = [:], queryParameters: [Foundation.URLQueryItem] = [], headers: [Swift.String : Swift.String] = ["Content-Type": "application/json", "Content-Language": "\(Locale.preferredLanguages[0].prefix(2))"], accessToken: BBCoreKit.BBPassphrase? = BBPassphrase.current, httpMethod: BBCoreKit.BBRequestHTTPMethod = .GET)
   @objc deinit
 }
 public struct BBEvent {
@@ -415,20 +427,19 @@ public class BBNetworkSession {
   public func discoverCharactersitic(_ identifier: BBCoreKit.BBIoTIdentifier, callback: @escaping (CoreBluetooth.CBCharacteristic?, Foundation.Data?, BBCoreKit.BBIoTError?) -> Swift.Void)
   public func read(from identifier: BBCoreKit.BBIoTIdentifier, completion: @escaping (CoreBluetooth.CBCharacteristic?, Foundation.Data?, BBCoreKit.BBIoTError?) -> Swift.Void)
   public func write(to identifier: BBCoreKit.BBIoTIdentifier, command: BBCoreKit.BBIoTCommand, completion: @escaping (Swift.Bool) -> Swift.Void)
-  public func getRssi(completion: @escaping ((Swift.Int?) -> Swift.Void))
+  public func getRssi(completion: @escaping ((Swift.Int?, BBCoreKit.BBIoTError?) -> Swift.Void))
   public func listen(to characteristicIdentifier: BBCoreKit.BBIoTIdentifier, completion: @escaping (CoreBluetooth.CBCharacteristic?, Foundation.Data?) -> Swift.Void)
   public func readRSSI()
   public func maximumWriteValueLength(for writeType: CoreBluetooth.CBCharacteristicWriteType) -> Swift.Int
   @objc deinit
 }
 extension BBCoreKit.BBIoTPeripheral : CoreBluetooth.CBPeripheralDelegate {
-  @objc dynamic public func peripheralDidUpdateRSSI(_ peripheral: CoreBluetooth.CBPeripheral, error: Swift.Error?)
-  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didReadRSSI RSSI: Foundation.NSNumber, error: Swift.Error?)
-  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didDiscoverServices error: Swift.Error?)
-  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didDiscoverCharacteristicsFor service: CoreBluetooth.CBService, error: Swift.Error?)
-  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didWriteValueFor characteristic: CoreBluetooth.CBCharacteristic, error: Swift.Error?)
-  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didUpdateValueFor characteristic: CoreBluetooth.CBCharacteristic, error: Swift.Error?)
-  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didUpdateNotificationStateFor characteristic: CoreBluetooth.CBCharacteristic, error: Swift.Error?)
+  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didReadRSSI RSSI: Foundation.NSNumber, error: (any Swift.Error)?)
+  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didDiscoverServices error: (any Swift.Error)?)
+  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didDiscoverCharacteristicsFor service: CoreBluetooth.CBService, error: (any Swift.Error)?)
+  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didWriteValueFor characteristic: CoreBluetooth.CBCharacteristic, error: (any Swift.Error)?)
+  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didUpdateValueFor characteristic: CoreBluetooth.CBCharacteristic, error: (any Swift.Error)?)
+  @objc dynamic public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didUpdateNotificationStateFor characteristic: CoreBluetooth.CBCharacteristic, error: (any Swift.Error)?)
 }
 public enum BBIoTError {
   case bluetoothUnavailable
@@ -531,14 +542,14 @@ extension BBCoreKit.BBDeviceManagerDelegate {
   public func didSetDevice(device: BBCoreKit.BBIoTDevice)
 }
 public class BBDeviceManager {
-  public var delegate: BBCoreKit.BBDeviceManagerDelegate?
+  public var delegate: (any BBCoreKit.BBDeviceManagerDelegate)?
   required public init()
   public func armDeviceWith(identifier: Swift.String)
   @objc deinit
 }
 public enum BBRequestResult<T> where T : BBCoreKit.BBRequestProtocol {
   case success(response: T.Response, responseCode: Swift.Int)
-  case failed(Swift.Error?)
+  case failed((any Swift.Error)?)
 }
 extension CoreBluetooth.CBService {
   public func characteristic(with uuid: BBCoreKit.BBIoTIdentifier) -> CoreBluetooth.CBCharacteristic?
@@ -560,7 +571,7 @@ public enum BBKKeychainStorageAttributeKey {
 @objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @available(iOS 13.0, *)
 public class BBNFCNDEFReaderSession : ObjectiveC.NSObject, CoreNFC.NFCNDEFReaderSessionDelegate {
   public var payloadMessage: CoreNFC.NFCNDEFMessage!
-  public var delegate: BBCoreKit.BBNFCNDEFReaderSessionDelegate?
+  public var delegate: (any BBCoreKit.BBNFCNDEFReaderSessionDelegate)?
   public var nfcSession: CoreNFC.NFCNDEFReaderSession!
   @objc deinit
 }
@@ -577,11 +588,11 @@ extension BBCoreKit.BBNFCNDEFReaderSessionDelegate {
 @available(iOS 13.0, *)
 extension BBCoreKit.BBNFCNDEFReaderSession {
   @objc dynamic public func readerSessionDidBecomeActive(_ session: CoreNFC.NFCNDEFReaderSession)
-  @objc dynamic public func readerSession(_ session: CoreNFC.NFCNDEFReaderSession, didInvalidateWithError error: Swift.Error)
+  @objc dynamic public func readerSession(_ session: CoreNFC.NFCNDEFReaderSession, didInvalidateWithError error: any Swift.Error)
   @objc dynamic public func readerSession(_ session: CoreNFC.NFCNDEFReaderSession, didDetectNDEFs messages: [CoreNFC.NFCNDEFMessage])
   public func didWrite()
   @available(iOS 13.0, *)
-  @objc dynamic public func readerSession(_ session: CoreNFC.NFCNDEFReaderSession, didDetect tags: [CoreNFC.NFCNDEFTag])
+  @objc dynamic public func readerSession(_ session: CoreNFC.NFCNDEFReaderSession, didDetect tags: [any CoreNFC.NFCNDEFTag])
   public func read(infoMessage: Swift.String, successMessage: Swift.String)
   public func write(_ type: BBCoreKit.NFCTypes, infoMessage: Swift.String, successMessage: Swift.String)
   public func secureWrite(_ secureKey: Swift.String, infoMessage: Swift.String, successMessage: Swift.String)
